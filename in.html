@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine's Card</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Baloo+2&display=swap');
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+        
+        @keyframes slideAway {
+            from { transform: translate(0, 0); }
+            to { transform(var(--move-x, 50px), var(--move-y, -50px)); }
+        }
+        @keyframes floatingHearts {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(-100vh); opacity: 0; }
+        }
+        .cursive {
+            font-family: 'Dancing Script', cursive;
+        }
+        
+        body {
+            background: linear-gradient(to right, #ff758c, #ff7eb3);
+        }
+        
+        #card {
+            width: 450px;
+            height: 300px;
+            display: flex;
+            font-family: "";
+            align-items: center;
+            justify-content: center;
+            background: red;
+            font-family: 'Dancing Script', bold;
+            color: white;
+            font-size: 27px;
+            font-weight: bold;
+            border-radius: 45px;
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.3s ease-in-out;
+        }
+        
+        #card:active {
+            transform: scale(0.95);
+        }
+        
+        #questionSection {
+            width: 450px;
+            height: 250x;
+            background: rgb(255, 255, 255);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .heart {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: red;
+            color: #ff758c;
+            clip-path: polygon(-41% 0,50% 91%, 141% 0);
+    
+                animation: floatingHearts 5s linear infinite;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen relative">
+    
+    <!-- Valentine's Card -->
+    <div id="card" onclick="openCard()">
+        For My Special Person 💖
+    </div>
+    
+    <!-- Question Section -->
+    <div id="questionSection" class="hidden text-center">
+        <h1 class="text-3xl font-bold text-red-500 cursive">Will you be my Valentine? 💕</h1>
+        <div class="mt-4">
+            <button id="yesButton" onclick="acceptLove()" class="bg-green-500 text-white px-4 py-2 rounded text-xl">Yes</button>
+            <button id="noButton" onmouseover="moveNoButton(event)" onclick="resetNoButton()" class="bg-red-500 text-white px-4 py-2 rounded text-xl">No</button>
+        </div>
+    </div>
+    
+    <script>
+ function openCard() {
+    let card = document.getElementById("card");
+    card.style.animation = "fadeOut 0.5s forwards";
+    setTimeout(() => {
+        card.classList.add("hidden");
+        let questionSection = document.getElementById("questionSection");
+        questionSection.classList.remove("hidden");
+        questionSection.style.opacity = "1";
+    }, 500);
+}
+
+function acceptLove() {
+    let card = document.getElementById("questionSection");
+    
+    card.innerHTML = "<h1 class='text-4xl font-bold text-pink-600 cursive'>I Love You! Vanshu 💖</h1>";
+}
+function moveNoButton(event) {
+    let noButton = document.getElementById("noButton");
+    let rect = noButton.getBoundingClientRect();
+    let centerX = rect.left + rect.width / 2;
+    let centerY = rect.top + rect.height / 2;
+    let deltaX = centerX - event.clientX;
+    let deltaY = centerY - event.clientY;
+    let distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+    
+    // Move the button based on the distance
+    noButton.style.setProperty('--move-x', `${deltaX / distance * 100}px`);
+    noButton.style.setProperty('--move-y', `${deltaY / distance * 100}px`);
+    noButton.style.transition = "transform 0.3s ease-out";
+    noButton.style.transform = `translate(${deltaX / distance * 100}px, ${deltaY / distance * 100}px)`;
+    
+    // Calculate opacity based on the distance
+
+
+
+}
+
+        
+function resetNoButton() {
+            let noButton = document.getElementById("noButton");
+            noButton.style.transform = "translate(0, 0)";
+        }
+        function createHearts() {
+            setInterval(() => {
+                let heart = document.createElement("div");
+                heart.classList.add("heart");
+                heart.style.left = `${Math.random() * 100}vw`;
+                heart.style.animationDuration = `${2 + Math.random() * 3}s`;
+                document.body.appendChild(heart);
+                setTimeout(() => heart.remove(), 5000);
+            }, 500);
+        }
+        
+        createHearts();
+    </script>
+</body>
+</html>
